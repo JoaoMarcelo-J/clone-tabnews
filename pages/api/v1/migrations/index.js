@@ -39,5 +39,5 @@ export default async function migrations(req, res) {
     return res.status(200).json(migratedMigrations);
   }
 
-  return res.status(405).json({ error: "Method not allowed" });
+  return res.status(405).json({ error: "Method not allowedd" });
 }
