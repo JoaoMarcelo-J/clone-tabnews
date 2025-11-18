@@ -3,29 +3,30 @@ import { join } from "node:path";
 import database from "infra/database.js";
 
 export default async function migrations(req, res) {
-  const dbClient = await database.getNewClient();
   const allowedMethod = ["GET", "POST"];
 
-  const defaultMigrationOptions = {
-    dbClient,
-    dir: join("infra", "migrations"),
-    direction: "up",
-    verbose: true,
-    migrationsTable: "pgmigrations",
-  };
+  if (!allowedMethod.includes(req.method)) {
+    return res.status(405).json({ error: "Method not allowed" });
+  }
+
+  let dbClient;
 
   try {
-    if (allowedMethod.includes(req.method) === false) {
-      return res.status(405).json({ error: "Method not allowed" });
-    }
+    dbClient = await database.getNewClient();
+
+    const defaultMigrationOptions = {
+      dbClient,
+      dir: join("infra", "migrations"),
+      direction: "up",
+      verbose: true,
+      migrationsTable: "pgmigrations",
+    };
 
     if (allowedMethod.includes("GET")) {
       const pendingMigrations = await migrationRunner({
         ...defaultMigrationOptions,
         dryRun: true,
       });
-
-      await dbClient.end();
 
       return res.status(200).json(pendingMigrations);
     }
@@ -40,7 +41,8 @@ export default async function migrations(req, res) {
         return res.status(201).json(migratedMigrations);
       }
     }
-  } catch {
+  } catch (error) {
+    console.error(error);
     throw error;
   } finally {
     await dbClient.end();
