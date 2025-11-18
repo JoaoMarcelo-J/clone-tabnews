@@ -14,11 +14,11 @@ export default async function migrations(req, res) {
     migrationsTable: "pgmigrations",
   };
 
-  if (allowedMethod.includes(req.method) === false) {
-    return res.status(405).json({ error: "Method not allowed" });
-  }
-
   try {
+    if (allowedMethod.includes(req.method) === false) {
+      return res.status(405).json({ error: "Method not allowed" });
+    }
+
     if (allowedMethod.includes("GET")) {
       const pendingMigrations = await migrationRunner({
         ...defaultMigrationOptions,
