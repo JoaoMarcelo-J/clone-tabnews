@@ -1,9 +1,4 @@
 import database from "infra/database.js";
-import orchestrator from "../orchestrator.js";
-
-beforeAll(async () => {
-  await orchestrator.waitForAllServices();
-});
 beforeAll(cleanDatabase);
 
 async function cleanDatabase() {
