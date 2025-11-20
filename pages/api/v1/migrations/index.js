@@ -22,7 +22,7 @@ export default async function migrations(req, res) {
       migrationsTable: "pgmigrations",
     };
 
-    if (allowedMethod.includes("GET")) {
+    if (req.method === "GET") {
       const pendingMigrations = await migrationRunner({
         ...defaultMigrationOptions,
         dryRun: true,
@@ -31,7 +31,7 @@ export default async function migrations(req, res) {
       return res.status(200).json(pendingMigrations);
     }
 
-    if (allowedMethod.includes("POST")) {
+    if (req.method === "POST") {
       const migratedMigrations = await migrationRunner({
         ...defaultMigrationOptions,
         dryRun: false,
@@ -40,6 +40,8 @@ export default async function migrations(req, res) {
       if (migratedMigrations.length > 0) {
         return res.status(201).json(migratedMigrations);
       }
+
+      return res.status(200).json(migratedMigrations);
     }
   } catch (error) {
     console.error(error);
