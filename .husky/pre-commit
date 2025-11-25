@@ -1,0 +1,4 @@
+#!/usr/bin/env sh
+
+echo "🔍 Rodando Secretlint..."
+npm run lint:secretlint:check || exit 1
