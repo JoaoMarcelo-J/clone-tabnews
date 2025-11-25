@@ -87,7 +87,6 @@ const ignorePaths = [
   "dist",
   "build",
   "coverage",
-  ".secretlintrc.json",
   "package-lock.json",
   ".husky",
 ];
