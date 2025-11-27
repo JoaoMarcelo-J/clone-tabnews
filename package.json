@@ -4,8 +4,8 @@
   "description": "implementação do tabnews para o curso.dev",
   "main": "index.js",
   "scripts": {
-    "dev": "(trap 'npm run services:stop' INT TERM ; next dev)",
-    "dev:all": "npm run services:up && npm run services:wait:database && npm run migrations:up && next dev",
+    "dev": "next dev",
+    "dev:all": "npm run services:up && npm run services:wait:database && npm run migrations:up && (trap 'npm run services:stop' INT TERM ; next dev)",
     "services:up": "docker compose -f infra/compose.yaml up -d",
     "services:down": "docker compose -f infra/compose.yaml down",
     "services:stop": "docker compose -f infra/compose.yaml stop",
@@ -18,7 +18,7 @@
     "lint:detect-secrets": "node scripts/detect-secrets.js",
     "test": "npm run services:up && concurrently -n next,jest --hide next -k -s command-jest \"next dev\" \"jest --runInBand\"",
     "postteste": "npm run services:stop",
-    "test:watch": "jest --watchAll --runInBand",
+    "test:watch": "jest --watchAll --runInBand --verbose",
     "migrations:up": "node-pg-migrate --migrations-dir infra/migrations --envPath .env.development up",
     "prepare": "husky",
     "commit": "cz"
