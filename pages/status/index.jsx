@@ -20,7 +20,7 @@ function DatabaseStatus() {
     refreshInterval: 2000,
   });
 
-  let databaseInfo = "Carregando...";
+  let databaseInfo = {};
 
   if (!isLoading && data) {
     databaseInfo = {
@@ -33,16 +33,21 @@ function DatabaseStatus() {
 
   return (
     <div>
-      <h2>Ultima atualização: {databaseInfo.updated_at}</h2>
-      <div>
-        Versão do banco de dados: <b>{databaseInfo.version}</b>
-      </div>
-      <div>
-        Máximo de conexões: <b>{databaseInfo.max_connections}</b>
-      </div>
-      <div>
-        Conexões abertas: <b>{databaseInfo.opened_connections}</b>
-      </div>
+      {isLoading && <div>Carregando...</div>}
+      {!isLoading && (
+        <>
+          <h2>Ultima atualização: {databaseInfo.updated_at}</h2>
+          <div>
+            Versão do banco de dados: <b>{databaseInfo.version}</b>
+          </div>
+          <div>
+            Máximo de conexões: <b>{databaseInfo.max_connections}</b>
+          </div>
+          <div>
+            Conexões abertas: <b>{databaseInfo.opened_connections}</b>
+          </div>
+        </>
+      )}
     </div>
   );
 }
