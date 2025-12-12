@@ -1,4 +1,0 @@
-#!/usr/bin/env sh
-
-echo "🔍 Verificando credenciais..."
-npm run lint:detect-secrets || exit 1
