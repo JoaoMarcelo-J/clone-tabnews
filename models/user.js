@@ -68,11 +68,17 @@ async function update(username, userInputValues) {
   const currentUser = await findOneByUsername(username);
 
   if ("username" in userInputValues) {
-    await validateUniqueFields({ username: userInputValues.username });
+    await validateUniqueFields(
+      { username: userInputValues.username },
+      currentUser.id,
+    );
   }
 
   if ("email" in userInputValues) {
-    await validateUniqueFields({ email: userInputValues.email });
+    await validateUniqueFields(
+      { email: userInputValues.email },
+      currentUser.id,
+    );
   }
 
   if ("password" in userInputValues) {
